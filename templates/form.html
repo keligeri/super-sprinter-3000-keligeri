@@ -1,0 +1,40 @@
+
+<!doctype html>
+<title>User Story Manager</title>
+
+<div class=page>
+    <form action="{{ url_for('add_new_story') }}" method=post>
+
+        <h1>User Story Manager - Add new User Story</h1>
+        <p>Story Title</p>
+            <input type="text" name="story_title" style="height: 20px; font-size: 12pt; width: 75%;">
+
+        <p>User Story</p>
+            <input type="text" name="user_story" style="height: 80px; font-size: 12pt; width: 75%; vertical-align: top";>
+
+        <p>Acceptance Criteria</p>
+            <input type="text" name="acceptance_criteria" style="height: 80px; font-size: 12pt; width: 75%; vertical-align: top;">
+
+        <p>Business Value</p>
+            <input type="number" name="business_value" min="100" max="1500" step="100"
+                   style="height: 20px; width: 5%;">
+
+        <p>Estimation (h)</p>
+            <input type="number" name="estimation" min="0.5" max="40" step="0.5"
+                   style="height: 20px; width: 5%;">
+
+        <p>Status</p>
+            <select>
+                <option selected name="status">Planning</option>
+                <option name="status">To Do</option>
+                <option name="status">In Progress</option>
+                <option name="status">Review</option>
+                <option name="status">Done</option>
+            </select>
+
+        <p><input type="submit" value="Create"></p>
+
+    </form>
+</div>
+</body>
+</html>

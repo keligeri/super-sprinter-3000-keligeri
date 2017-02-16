@@ -2,30 +2,42 @@
 <!doctype html>
 <head>
     <title>User Story Manager</title>
+    <style>
+        .text_area {
+            height: 100px;
+            width: 750px;
+            font-size: 12px;
+        }
+
+        .number_input {
+            height: 20px;
+            width: 5%;
+        }
+
+    </style>
 </head>
 
 <body>
     <form action="{{ url_for('add_new_story') }}" method=post>
 
         <h1>User Story Manager - Add new User Story</h1>
-        <p>Story Title</p>
-            <input type="text" name="story_title" style="height: 20px; font-size: 12pt; width: 75%;">
 
-        <p>User Story</p>
-            <input type="text" name="user_story" style="height: 80px; font-size: 12pt; width: 75%; vertical-align: top";>
+        <label for="story_title">Story Title</label><br>
+        <input type="text" name="story_title" id="story_title" style="height: 20px; font-size: 12pt; width: 750px;"><br><br>
+
+        <label for="user_story">User Story</label><br>
+        <textarea class="text_area" name="user_story" id="user_story"></textarea><br><br>
 
         <p>Acceptance Criteria</p>
-            <input type="text" name="acceptance_criteria" style="height: 80px; font-size: 12pt; width: 75%; vertical-align: top;">
+        <textarea class="text_area" name="acceptance_criteria"></textarea><br><br>
 
-        <p>Business Value</p>
-            <input type="number" name="business_value" min="100" max="1500" step="100"
-                   style="height: 20px; width: 5%;">
+        <label for="business_value">Business value</label><br>
+        <input class="number_input" type="number" name="business_value" id="business_value" min="100" max="1500" step="100" placeholder="100"><br><br>
 
-        <p>Estimation (h)</p>
-            <input type="number" name="estimation" min="0.5" max="40" step="0.5"
-                   style="height: 20px; width: 5%;">
+        <label for=estimation">Estimation (h)</label><br>
+        <input class="number_input" type="number" name="estimation" min="0.5" max="40" step="0.5" placeholder="0.5"><br><br>
 
-        <p>Status</p>
+        <label>Status</label><br>
             <select>
                 <option selected name="status">Planning</option>
                 <option name="status">To Do</option>

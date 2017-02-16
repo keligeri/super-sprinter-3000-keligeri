@@ -1,0 +1,4 @@
+graft user_story_manager/templates
+graft user_story_manager/static
+include user_story_manager/connect_database.py
+include user_story_manager/models.py

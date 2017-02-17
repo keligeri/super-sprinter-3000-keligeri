@@ -15,7 +15,6 @@ def init_db():
     if UserStory.table_exists():
         UserStory.drop_table(cascade=True)
         db.create_table(UserStory, safe=True)
-
     else:
         db.create_table(UserStory, safe=True)
 
@@ -23,7 +22,6 @@ def init_db():
         Status.drop_table(cascade=True)
         db.create_table(Status, safe=True)
         update_status_table()
-
     else:
         db.create_table(Status, safe=True)
         update_status_table()
@@ -58,7 +56,6 @@ def show_stories():
 
 @app.route('/story/', methods=["GET"])
 def show_form():
-    story = []      # ez nem hiszem h kéne
     status_options = Status.select()
     return render_template('form.html', user_story=0, status_options=status_options, show_only=True, header='Add new Story', submit_button='Create')
 
@@ -95,10 +92,12 @@ def edit_story(story_id):
     return redirect(url_for('show_stories'))
 
 
-@app.route('/story/<story_id>', methods=["POST"])
+@app.route('/delete/<story_id>', methods=["GET"])
 def delete_story(story_id):
     story = UserStory.get(UserStory.id == story_id)
     story.delete_instance()
+    story.save()
+    return redirect(url_for('show_stories'))
 
 
 # allow running from the command line

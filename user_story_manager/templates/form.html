@@ -1,7 +1,7 @@
 
 <!doctype html>
 <head>
-    <title>User Story Manager</title>
+    <title>Super Sprinter 3000 {{ header }}</title>
     <style>
         .story_title {
             height: 20px;
@@ -24,27 +24,27 @@
 </head>
 
 <body>
-    <form action="{{ url_for('add_new_story') }}" method=post>
+    <form action="/story/{{user_story.id}}" method="POST">
 
-        <h1>User Story Manager - Add new User Story</h1>
+        <h1>User Story Manager - {{ header }}</h1>
 
         <label for="story_title">Story Title</label><br>
-        <input class="story_title" type="text" name="story_title" id="story_title"><br><br>
+        <input class="story_title" type="text" name="story_title" id="story_title" value="{{ user_story.title }}" required><br><br>
 
         <label for="user_story">User Story</label><br>
-        <textarea class="text_area" name="user_story" id="user_story"></textarea><br><br>
+        <textarea class="text_area" name="user_story" id="user_story" required>{{ user_story.story }}</textarea><br><br>
 
         <p>Acceptance Criteria</p>
-        <textarea class="text_area" name="acceptance_criteria"></textarea><br><br>
+        <textarea class="text_area" name="acceptance_criteria" required>{{ user_story.criteria }}</textarea><br><br>
 
         <label for="business_value">Business value</label><br>
-        <input class="number_input" type="number" name="business_value" id="business_value" min="100" max="1500" step="100" placeholder="100"><br><br>
+        <input class="number_input" type="number" name="business_value" id="business_value" min="100" max="1500" step="100" placeholder="100" value="{{ user_story.business_value }}" required><br><br>
 
         <label for=estimation">Estimation (h)</label><br>
-        <input class="number_input" type="number" name="estimation" min="0.5" max="40" step="0.5" placeholder="0.5"><br><br>
+        <input class="number_input" type="number" name="estimation" min="0.5" max="40" step="0.5" placeholder="0.5" value="{{ user_story.estimation }}" required><br><br>
 
         <label>Status</label><br>
-            <select>
+            <select name="status" id="status" value="{{ user_story.status }}">
                 <option selected name="status">Planning</option>
                 <option name="status">To Do</option>
                 <option name="status">In Progress</option>
@@ -52,7 +52,7 @@
                 <option name="status">Done</option>
             </select>
 
-        <p><input type="submit" value="Create"></p>
+        <p><input type="submit" id="submit_button" value="{{ submit_button }}"></p>
 
     </form>
 

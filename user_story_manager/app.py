@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template, g
 from user_story_manager.models import *
 
 # config - aside from our database, the rest is for use by Flask
@@ -14,42 +14,76 @@ def init_db():
     db.connect()
     if UserStory.table_exists():
         UserStory.drop_table(cascade=True)
-    db.create_table(UserStory, safe=True)
+        db.create_table(UserStory, safe=True)
 
+    else:
+        db.create_table(UserStory, safe=True)
+
+    if Status.table_exists():
+        Status.drop_table(cascade=True)
+        db.create_table(Status, safe=True)
+        update_status_table()
+
+    else:
+        db.create_table(Status, safe=True)
+        update_status_table()
+
+
+def update_status_table():
+    status_list = ['Planning', 'To Do', 'In Progress', 'Review', 'Done']
+    for status in status_list:
+        new_status = Status.create(status_options=status)
+        new_status.save()
 
 @app.cli.command('initdb')
 def initdb_command():
     init_db()
     print ("Initialized the database")
 
+@app.teardown_appcontext
+def close_db(error):
+    """Closes the database again at the end of the request."""
+    if hasattr(g, 'postgre_db'):
+        g.postgre_db.close()
 
-@app.route('/', methods=["GET"])
+@app.route('/story/', methods=["GET"])
 def show_form():
-    return render_template('form.html')
+    story = []      # ez nem hiszem h kéne
+    return render_template('form.html', user_story=0, header='Add new Story', submit_button='Create')
 
-@app.route('/story', methods=["GET","POST"])
+@app.route('/story/', methods=["POST"])
 def add_new_story():
-    if request.method == 'POST':
-        with db.transaction():
-            new_story = UserStory.create(title=request.form['story_title'],
-                                         story= request.form['user_story'],
-                                         criteria= request.form['acceptance_criteria'],
-                                         business_value=request.form['business_value'],
-                                         estimation=request.form['estimation'],
-                                         status=request.form['status'])
-            new_story.save()
-        return redirect(url_for('show_stories'))
+    new_story = UserStory.create(title=request.form['story_title'],
+                                 story=request.form['user_story'],
+                                 criteria=request.form['acceptance_criteria'],
+                                 business_value=request.form['business_value'],
+                                 estimation=request.form['estimation'],
+                                 status=request.form['status'])
+    new_story.save()
+    return redirect(url_for('show_stories'))
 
-    return render_template('form.html')
+@app.route('/story/<story_id>', methods=["GET"])
+def show_edit_story(story_id):
+    stories = UserStory.get(UserStory.id == story_id)
+    return render_template('form.html', user_story=stories, header='Edit Story', submit_button='Update')
 
-@app.route('/story/story_id', methods=["POST"])
-def edit_story():
-    pass
+@app.route('/story/<story_id>', methods=["POST"])
+def edit_story(story_id):
+    editing_story = UserStory.update(title=request.form['story_title'],
+                                 story=request.form['user_story'],
+                                 criteria=request.form['acceptance_criteria'],
+                                 business_value=request.form['business_value'],
+                                 estimation=request.form['estimation'],
+                                 status=request.form['status']).where(UserStory.id == int(story_id))
+    editing_story.execute()
+    return redirect(url_for('show_stories'))
 
+@app.route('/')
 @app.route('/list', methods=["GET"])
 def show_stories():
     stories = UserStory.select().order_by(UserStory.id)
     return render_template('list.html', stories=stories)
+
 
 
 # allow running from the command line

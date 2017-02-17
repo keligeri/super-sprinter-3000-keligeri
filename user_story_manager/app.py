@@ -49,7 +49,8 @@ def close_db(error):
 @app.route('/story/', methods=["GET"])
 def show_form():
     story = []      # ez nem hiszem h kéne
-    return render_template('form.html', user_story=0, header='Add new Story', submit_button='Create')
+    status_options = Status.select()
+    return render_template('form.html', user_story=0, status_options=status_options, show_only=True, header='Add new Story', submit_button='Create')
 
 @app.route('/story/', methods=["POST"])
 def add_new_story():
@@ -65,7 +66,9 @@ def add_new_story():
 @app.route('/story/<story_id>', methods=["GET"])
 def show_edit_story(story_id):
     stories = UserStory.get(UserStory.id == story_id)
-    return render_template('form.html', user_story=stories, header='Edit Story', submit_button='Update')
+    status_options = Status.select()
+    status = UserStory.get(UserStory.id == story_id)
+    return render_template('form.html', user_story=stories, status_options=status_options, chosen_status=status.status, header='Edit Story', submit_button='Update')
 
 @app.route('/story/<story_id>', methods=["POST"])
 def edit_story(story_id):

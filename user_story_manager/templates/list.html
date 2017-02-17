@@ -27,7 +27,10 @@
 <body>
 
     <h1>User Story Manager</h1>
+        <form action="{{ url_for('show_form') }}">
         <p><input type="submit" value="Add a new User Story" id="new_user_story_button"></p>
+        </form>
+
         <table width="75%">
             <tr>
                 <th>ID</th>
@@ -37,6 +40,7 @@
                 <th>Business Value</th>
                 <th>Estimation</th>
                 <th>Status</th>
+                <th>Options</th>
             </tr>
             <tr>
                 {% for story in stories %}
@@ -47,6 +51,11 @@
                     <td>{{ story.business_value }}</td>
                     <td>{{ story.estimation }}</td>
                     <td>{{ story.status }}</td>
+                    <td><a href="{{ url_for('show_edit_story', story_id = story.id) }}">
+                        <img src="static/pencil.png" alt="Edit story" width="20" height="20"></a>
+                        <a href="{{ url_for('delete_story', story_id = story.id) }}">
+                        <img src="static/bin.png" alt="Delete story" width="20" height="20"></a>
+                    </td>
             </tr>
                 {% else %}
                     <strong>No User Story here so far.</strong>

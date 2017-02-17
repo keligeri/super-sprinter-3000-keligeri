@@ -46,11 +46,13 @@ def close_db(error):
     if hasattr(g, 'postgre_db'):
         g.postgre_db.close()
 
+
 @app.route('/story/', methods=["GET"])
 def show_form():
     story = []      # ez nem hiszem h kéne
     status_options = Status.select()
     return render_template('form.html', user_story=0, status_options=status_options, show_only=True, header='Add new Story', submit_button='Create')
+
 
 @app.route('/story/', methods=["POST"])
 def add_new_story():
@@ -63,12 +65,14 @@ def add_new_story():
     new_story.save()
     return redirect(url_for('show_stories'))
 
+
 @app.route('/story/<story_id>', methods=["GET"])
 def show_edit_story(story_id):
     stories = UserStory.get(UserStory.id == story_id)
     status_options = Status.select()
     status = UserStory.get(UserStory.id == story_id)
     return render_template('form.html', user_story=stories, status_options=status_options, chosen_status=status.status, header='Edit Story', submit_button='Update')
+
 
 @app.route('/story/<story_id>', methods=["POST"])
 def edit_story(story_id):
@@ -81,13 +85,12 @@ def edit_story(story_id):
     editing_story.execute()
     return redirect(url_for('show_stories'))
 
+
 @app.route('/')
 @app.route('/list', methods=["GET"])
 def show_stories():
     stories = UserStory.select().order_by(UserStory.id)
     return render_template('list.html', stories=stories)
-
-
 
 # allow running from the command line
 if __name__ == '__main__':

@@ -41,7 +41,7 @@
         <input class="number_input" type="number" name="business_value" id="business_value" min="100" max="1500" step="100" placeholder="100" value="{{ user_story.business_value }}" required><br><br>
 
         <label for=estimation">Estimation (h)</label><br>
-        <input class="number_input" type="number" name="estimation" min="0.5" max="40" step="0.5" placeholder="0.5" value="{{ user_story.estimation }}" required><br><br>
+        <input class="number_input" type="number" name="estimation" id="estimation" min="0.5" max="40" step="0.5" placeholder="0.5" value="{{ user_story.estimation }}" required><br><br>
 
         <label>Status</label><br>
             {% if show_only == True %}

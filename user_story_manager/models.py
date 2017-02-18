@@ -10,10 +10,10 @@ class BaseModel(Model):
 
 class UserStory(BaseModel):
     title = CharField()
-    story = CharField()
-    criteria = CharField()
+    story = TextField()
+    criteria = TextField()
     business_value = IntegerField(constraints=[Check('business_value >= 100 and business_value <= 1500')])
-    estimation = DecimalField(constraints=[Check('estimation >= 0.5 and estimation <= 40')])
+    estimation = FloatField(constraints=[Check('estimation >= 0.5 and estimation <= 40')])
     status = CharField()
 
 

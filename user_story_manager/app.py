@@ -34,12 +34,6 @@ def update_status_table():
         new_status.save()
 
 
-@app.cli.command('initdb')
-def initdb_command():
-    init_db()
-    print("Initialized the database")
-
-
 @app.teardown_appcontext
 def close_db(error):
     """Closes the database again at the end of the request."""
@@ -57,7 +51,8 @@ def show_stories():
 @app.route('/story/', methods=["GET"])
 def show_form():
     status_options = Status.select()
-    return render_template('form.html', user_story=0, status_options=status_options, show_only=True, header='Add new Story', submit_button='Create')
+    return render_template('form.html', user_story=0, status_options=status_options, show_only=True,
+                           header='Add new Story', submit_button='Create')
 
 
 @app.route('/story/', methods=["POST"])
@@ -76,8 +71,9 @@ def add_new_story():
 def show_edit_story(story_id):
     story = UserStory.get(UserStory.id == story_id)
     status_options = Status.select()
-    chose_object = UserStory.get(UserStory.id == story_id)
-    return render_template('form.html', user_story=story, status_options=status_options, chosen_status=chose_object.status, header='Edit Story', submit_button='Update')
+    chosen_object = UserStory.get(UserStory.id == story_id)
+    return render_template('form.html', user_story=story, status_options=status_options,
+                           chosen_status=chosen_object.status, header='Edit Story', submit_button='Update')
 
 
 @app.route('/story/<story_id>', methods=["POST"])

@@ -1,13 +1,9 @@
-from flask import Flask, request, redirect, url_for, render_template, g
+from flask import Flask, request, redirect, url_for, render_template
 from user_story_manager.models import *
 
-# config - aside from our database, the rest is for use by Flask
 db = ConnectDatabase().db
-DEBUG = True
-SECRET_KEY = 'hin6bab8ge25*r=x&amp;+5$0kn=-#log$pt^#@vrqjld!^2ci@g*b'
 
 app = Flask(__name__)  # create the application instance :)
-app.config.from_object(__name__)  # load config from this file , flask.py
 
 
 def init_db():
@@ -32,13 +28,6 @@ def update_status_table():
     for status in status_list:
         new_status = Status.create(status_options=status)
         new_status.save()
-
-
-@app.teardown_appcontext
-def close_db(error):
-    """Closes the database again at the end of the request."""
-    if hasattr(g, 'postgre_db'):
-        g.postgre_db.close()
 
 
 @app.route('/')

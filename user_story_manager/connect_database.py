@@ -1,5 +1,6 @@
 from peewee import *
 
+
 class ConnectDatabase:
 
     def __init__(self):
